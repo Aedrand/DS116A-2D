@@ -6,38 +6,57 @@ using UnityEngine.UI;
 public class UFOControl : MonoBehaviour {
 
     public float speed;
-    //public Text countText;
-    //public Text winText;
-    //public Text timeText;
+    public Text countText;
+    public Text winText;
+    public Text timeText;
 
     private Rigidbody2D ufoBody;
-    //private int timeCount;
-    //private int count;
+    private int timeCount;
+    private int count;
 
 	// Use this for initialization
 	void Start () {
         ufoBody = GetComponent<Rigidbody2D>();
-        //count = 0;
-        //winText.text = "";
-        //setCountText();
+        count = 0;
+        winText.text = "";
+        setCountText();
 	}
-	
-	// Update is called once per frame
-	void FixedUpdate () {
+
+    void Update()
+    {
+        if(count < 12)
+        {
+            timeText.text = Time.time.ToString("0.00");
+        }
+        
+    }
+
+    void FixedUpdate () {
         float moveHoriz = Input.GetAxis("Horizontal");
         float moveVert = Input.GetAxis("Vertical");
 
         Vector2 movement = new Vector2(moveHoriz, moveVert);
         ufoBody.AddForce(movement * speed);
 	}
-    /*
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("PickUp"))
+        {
+            collision.gameObject.SetActive(false);
+
+            count++;
+            setCountText();
+        }
+    }
+    
     void setCountText()
     {
-        countText.text = "Collected: " + count.ToString() + "/12";
+        countText.text = "Collected: " + count + "/12";
 
         if(count >= 12)
         {
-            winText.text = "You Win!- ";
+            winText.text = "You Win!- " + timeText.text + " seconds!";
             GameObject[] objs = GameObject.FindGameObjectsWithTag("PickUp");
             foreach(GameObject target in objs)
             {
@@ -45,5 +64,5 @@ public class UFOControl : MonoBehaviour {
             }
 
         }
-    }*/
+    }
 }
