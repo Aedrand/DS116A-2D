@@ -9,6 +9,7 @@ public class UFOControl : MonoBehaviour {
     public Text countText;
     public Text winText;
     public Text timeText;
+    public GameObject pickupPrefab;
 
     private Rigidbody2D ufoBody;
     private int timeCount;
@@ -24,7 +25,12 @@ public class UFOControl : MonoBehaviour {
 
     void Update()
     {
-        if(count < 12)
+        if (Input.GetKey("escape"))
+        {
+            Application.Quit();
+        }
+
+        if(count < 12 && winText.text == "")
         {
             timeText.text = Time.time.ToString("0.00");
         }
