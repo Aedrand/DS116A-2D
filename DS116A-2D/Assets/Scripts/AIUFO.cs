@@ -22,7 +22,11 @@ public class AIUFO : MonoBehaviour {
 	
 	void FixedUpdate () {
         Transform target = getNearestPickup();
-        ufoBody.AddForce((target.position - transform.position)*speed);
+        if(target != null)
+        {
+            ufoBody.AddForce((target.position - transform.position)*speed);
+        }
+        
 	}
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -62,20 +66,26 @@ public class AIUFO : MonoBehaviour {
             locations.Add(pickup.transform);
         }
 
-        Transform bestTarget = null;
-        float closestDistanceSqr = Mathf.Infinity;
-        Vector3 currentPosition = transform.position;
-        foreach (Transform checkedPickup in locations)
+        if (locations.Count != 0)
         {
-            Vector3 directionToTarget = checkedPickup.position - currentPosition;
-            float dSqrToTarget = directionToTarget.sqrMagnitude;
-            if (dSqrToTarget < closestDistanceSqr)
+            Transform bestTarget = null;
+            float closestDistanceSqr = Mathf.Infinity;
+            Vector3 currentPosition = transform.position;
+            foreach (Transform checkedPickup in locations)
             {
-                closestDistanceSqr = dSqrToTarget;
-                bestTarget = checkedPickup;
+                Vector3 directionToTarget = checkedPickup.position - currentPosition;
+                float dSqrToTarget = directionToTarget.sqrMagnitude;
+                if (dSqrToTarget < closestDistanceSqr)
+                {
+                    closestDistanceSqr = dSqrToTarget;
+                    bestTarget = checkedPickup;
+                }
             }
+            return bestTarget;
         }
-
-        return bestTarget;
+        else
+        {
+            return null;
+        }
     }
 }
